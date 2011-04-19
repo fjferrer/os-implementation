@@ -22,7 +22,34 @@
 #include <geekos/keyboard.h>
 
 
+/*
+ * Kernel thread to echo pressed keys
+ */
 
+static void Echo_Keys(ulong_t arg)
+{
+  ulong_t count = 0;
+  Print("Entering Echo_Keys\n");
+
+  while(true)
+    {
+      Keycode code = Wait_For_Key();
+
+      KASSERT(code != KEY_UNKNOWN);
+
+      if (!( code & KEY_RELEASE_FLAG ))
+	Print("%c [%ld]\n", code, count++);
+
+      if ((code == (KEY_CTRL_FLAG | 'd')) ||
+	  (code == (KEY_CTRL_FLAG | KEY_SHIFT_FLAG | 'D')))
+	break;
+      
+      Yield();
+
+    }
+
+  Print("Exiting Echo_Keys\n");
+}
 
 /*
  * Kernel C code entry point.
@@ -47,8 +74,12 @@ void Main(struct Boot_Info* bootInfo)
     Print("Welcome to GeekOS!\n");
     Set_Current_Attr(ATTRIB(BLACK, GRAY));
 
-
-    TODO("Start a kernel thread to echo pressed keys and print counts");
+    
+    Start_Kernel_Thread(Echo_Keys, 0, PRIORITY_NORMAL, false);
+    
+    /*
+     * TODO("Start a kernel thread to echo pressed keys and print counts");
+     */
 
 
 

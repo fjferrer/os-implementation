@@ -29,7 +29,7 @@
 static void Echo_Keys(ulong_t arg)
 {
   ulong_t count = 0;
-  Print("Entering Echo_Keys\n");
+  Print("Hello from Facundo\n");
 
   while(true)
     {
@@ -48,7 +48,7 @@ static void Echo_Keys(ulong_t arg)
 
     }
 
-  Print("Exiting Echo_Keys\n");
+  Print("Bye from Facundo\n");
 }
 
 /*

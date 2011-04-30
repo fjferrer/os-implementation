@@ -125,19 +125,12 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
 				    &pUserContext);
     if (iErrorCode < 0){ return -3; } //check
 
-/*
- * Start a user-mode thread (i.e., a process), using given user context.
- * Returns pointer to the new thread if successful, null otherwise.
- */
-
-    pThread = Start_User_Thread( pUserContext, detached)
-
-    //* - Call Start_User_Thread() with the new User_Context
-    //* If all goes well, store the pointer to the new thread in
-    //* pThread and return 0.  Otherwise, return an error code.
-
-    TODO("Spawn a process by reading an executable from a filesystem");
-}
+    *pThread = Start_User_Thread( pUserContext, detached);
+    if (pThread == NULL) {
+      return -5;}
+    else {
+      return 0;}
+ }
 
 /*
  * If the given thread has a User_Context,

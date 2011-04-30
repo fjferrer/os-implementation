@@ -84,7 +84,7 @@ void Detach_User_Context(struct Kernel_Thread* kthread)
  *   the executable file doesn't exist.
  */
 int Spawn(const char *program, const char *command, struct Kernel_Thread **pThread)
-{
+  {
     /*
      * Hints:
      * - Call Read_Fully() to load the entire executable into a memory buffer
@@ -98,6 +98,44 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
      * If all goes well, store the pointer to the new thread in
      * pThread and return 0.  Otherwise, return an error code.
      */
+
+    void * pBuffer = NULL;
+    ulong_t * pLen = NULL;
+    int iErrorCode = 0;
+
+    char * exeFileData = NULL;
+    struct Exe_Format * exeFormat = NULL;
+    ulong_t exeFileLength = 0;
+
+    struct User_Context * pUserContext = NULL;
+
+    bool detached = false;
+
+    iErrorCode = Read_Fully(program, &pBuffer, pLen);
+    if (iErrorCode < 0){ return -1; } //check
+
+
+    exeFileData = (char*) pBuffer;
+    exeFileLength = *pLen;
+    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, exeFormat);
+    if (iErrorCode < 0){ return -2; } //check
+
+
+    iErrorCode = Load_User_Program( exeFileData, exeFileLength, exeFormat, command,
+				    &pUserContext);
+    if (iErrorCode < 0){ return -3; } //check
+
+/*
+ * Start a user-mode thread (i.e., a process), using given user context.
+ * Returns pointer to the new thread if successful, null otherwise.
+ */
+
+    pThread = Start_User_Thread( pUserContext, detached)
+
+    //* - Call Start_User_Thread() with the new User_Context
+    //* If all goes well, store the pointer to the new thread in
+    //* pThread and return 0.  Otherwise, return an error code.
+
     TODO("Spawn a process by reading an executable from a filesystem");
 }
 

@@ -78,9 +78,6 @@ void Main(struct Boot_Info* bootInfo)
     Print("Welcome to GeekOS!\n");
     Set_Current_Attr(ATTRIB(BLACK, GRAY));
 
-
-
-
     Spawn_Init_Process();
 
     /* Now this thread is done. */
@@ -99,11 +96,24 @@ static void Mount_Root_Filesystem(void)
 }
 
 
-
-
-
-
 static void Spawn_Init_Process(void)
-{
-    TODO("Spawn the init process");
+  {
+    /*
+     *   program - the full path of the program executable file
+     *   command - the command, including name of program and arguments
+     *   pThread - reference to Kernel_Thread pointer where a pointer to
+     *     the newly created user mode thread (process) should be
+     *     stored
+     */
+    
+    // program full path at const INIT_PROGRAM
+
+    // Declare pointer to command
+    char * pComArg = "shell.exe";   
+
+    // Declare kthread struct
+    struct Kernel_Thread * pThread = NULL;
+
+    Spawn(INIT_PROGRAM, pComArg, &pThread);
+    
 }

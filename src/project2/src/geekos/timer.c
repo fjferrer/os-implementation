@@ -46,7 +46,8 @@ int g_Quantum = DEFAULT_MAX_TICKS;
  * Ticks per second.
  * FIXME: should set this to something more reasonable, like 100.
  */
-#define TICKS_PER_SEC 18
+//#define TICKS_PER_SEC 18
+#define TICKS_PER_SEC 100
 
 /*#define DEBUG_TIMER */
 #ifdef DEBUG_TIMER
@@ -135,13 +136,21 @@ static void Spin(int count)
  */
 static void Calibrate_Delay(void)
 {
+    Print("Calibrating delay\n");
+
     Disable_Interrupts();
+
+    Print("- irq  disabled\n");
 
     /* Install temporarily interrupt handler */
     Install_IRQ(TIMER_IRQ, &Timer_Calibrate);
     Enable_IRQ(TIMER_IRQ);
 
+    Print("- interrupt handler installed\n");
+
     Enable_Interrupts();
+
+    Print("- irq enabled\n");
 
     /* Wait a few ticks */
     while (g_numTicks < CALIBRATE_NUM_TICKS)
@@ -156,12 +165,13 @@ static void Calibrate_Delay(void)
 
     Disable_Interrupts();
 
-    /*
-     * Mask out the timer IRQ again,
+    /*     * Mask out the timer IRQ again,
      * since we will be installing a real timer interrupt handler.
      */
     Disable_IRQ(TIMER_IRQ);
     Enable_Interrupts();
+    Print("Finish with delay calibration\n");
+
 }
 
 /* ----------------------------------------------------------------------

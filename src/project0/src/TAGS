@@ -1,0 +1,966 @@
+
+TAG1,420
+common/fmtout.c,c2,2
+typedef long intmax_t;3,23
+typedef unsigned long uintmax_t;4,54
+typedef unsigned long uintptr_t;5,95
+#define ASSERT(6,136
+  FL_ZERO 8,180
+  FL_ZERO 9,199
+#define MIN_RANK	30,722
+#define MAX_RANK	31,748
+#define INTMAX_RANK	32,774
+#define SIZE_T_RANK	33,803
+#define PTRDIFF_T_RANK	34,832
+#define EMIT(35,864
+#define NDIGITS_MAX 36,886
+    char *s;s66,1598
+    size_t n, size;68,1645
+
+common/TAGS,413
+fmtout.c,c2,2
+typedef long intmax_t;3,16
+typedef unsigned long uintmax_t;4,47
+typedef unsigned long uintptr_t;5,88
+#define ASSERT(6,129
+  FL_ZERO 8,173
+  FL_ZERO 9,192
+#define MIN_RANK	30,715
+#define MAX_RANK	31,741
+#define INTMAX_RANK	32,767
+#define SIZE_T_RANK	33,796
+#define PTRDIFF_T_RANK	34,825
+#define EMIT(35,857
+#define NDIGITS_MAX 36,879
+    char *s;s67,1612
+    size_t n, size;69,1659
+
+common/fmtout.c,1059
+typedef long intmax_t;43,1225
+typedef unsigned long uintmax_t;44,1248
+typedef unsigned long uintptr_t;45,1281
+#define ASSERT(48,1325
+enum flags 51,1387
+  FL_ZERO 52,1400
+  FL_ZERO   = 0x01,x0152,1400
+  FL_MINUS 53,1441
+  FL_MINUS  = 0x02,x0253,1441
+  FL_PLUS 54,1483
+  FL_PLUS   = 0x04,x0454,1483
+  FL_TICK 55,1524
+  FL_TICK   = 0x08,x0855,1524
+  FL_SPACE 56,1562
+  FL_SPACE  = 0x10,x1056,1562
+  FL_HASH 57,1604
+  FL_HASH   = 0x20,x2057,1604
+  FL_SIGNED 58,1642
+  FL_SIGNED = 0x40,x4058,1642
+  FL_UPPER 59,1686
+  FL_UPPER  = 0x80	x8059,1686
+enum ranks 63,1797
+  rank_char	64,1810
+  rank_short	65,1828
+  rank_int 66,1847
+  rank_long	67,1864
+  rank_longlong	69,1887
+#define MIN_RANK	73,1919
+#define MAX_RANK	74,1946
+#define INTMAX_RANK	76,1974
+#define SIZE_T_RANK	77,2004
+#define PTRDIFF_T_RANK	78,2034
+#define EMIT(81,2078
+#define NDIGITS_MAX 94,2604
+format_int(97,2642
+int Format_Output(228,5790
+    st_normal,241,6111
+    st_flags,242,6147
+    st_width,243,6183
+    st_prec,244,6217
+    st_modifiers	245,6254
+
+common/memmove.c,17
+memmove(37,1588
+
+common/string.c,659
+extern void *Malloc(Malloc20,448
+void* memset(22,483
+void* memcpy(34,645
+int memcmp(47,867
+size_t strlen(62,1081
+size_t strnlen(78,1467
+int strcmp(86,1602
+int strncmp(97,1770
+char *strcat(strcat113,2034
+char *strcpy(strcpy125,2190
+char *strncpy(strncpy137,2346
+char *strdup(strdup151,2557
+int atoi(161,2679
+char *strchr(strchr174,2851
+char *strrchr(strrchr184,2980
+char *strpbrk(strpbrk197,3162
+struct String_Output_Sink 213,3398
+    struct Output_Sink o;214,3426
+    char *s;s215,3452
+    size_t n,216,3465
+    size_t n, size;216,3465
+static void String_Emit(219,3489
+static void String_Finish(228,3674
+int snprintf(242,3988
+
+libc/compat.c,26
+void *Malloc(Malloc4,40
+
+geekos/gdt.c,308
+extern void Load_GDTR(19,417
+#define NUM_GDT_ENTRIES 28,672
+static struct Segment_Descriptor s_GDT[s_GDT33,756
+static int s_numAllocated 38,859
+struct Segment_Descriptor* Allocate_Segment_Descriptor(48,1143
+void Free_Segment_Descriptor(75,1653
+int Get_Descriptor_Index(91,1964
+void Init_GDT(99,2099
+
+geekos/malloc.c,63
+void Init_Heap(20,479
+void* Malloc(31,766
+void Free(48,1022
+
+geekos/kthread.c,1640
+static struct All_Thread_List s_allThreadList;28,689
+static struct Thread_Queue s_runQueue;33,774
+struct Kernel_Thread* g_currentThread;38,840
+int g_needReschedule;45,1081
+volatile int g_preemptionDisabled;52,1272
+static struct Thread_Queue s_graveyardQueue;59,1454
+static struct Thread_Queue s_reaperWaitQueue;60,1499
+static unsigned int s_tlocalKeyCounter 67,1751
+static tlocal_destructor_t s_tlocalDestructors[s_tlocalDestructors68,1795
+static void Init_Thread(77,2076
+static struct Kernel_Thread* Create_Thread(109,2971
+static __inline__ void Push(149,3982
+static void Destroy_Thread(161,4289
+static void Reap_Thread(180,4713
+static void Detach_Thread(190,4949
+static void Launch_Thread(207,5402
+static void Push_General_Registers(215,5525
+static void Shutdown_Thread(235,6080
+static void Setup_Kernel_Thread(243,6200
+static void Idle(307,8145
+static void Reaper(317,8310
+static __inline__ struct Kernel_Thread* Find_Best(364,9460
+static __inline__ const void** Get_Tlocal_Pointer(380,9947
+static void Tlocal_Exit(397,10520
+void Init_Scheduler(426,11180
+struct Kernel_Thread* Start_Kernel_Thread(462,12305
+void Make_Runnable(489,12897
+void Make_Runnable_Atomic(500,13121
+struct Kernel_Thread* Get_Current(510,13315
+struct Kernel_Thread* Get_Next_Runnable(519,13473
+void Schedule(541,14018
+void Yield(567,14740
+void Exit(579,14953
+int Join(615,15747
+struct Kernel_Thread* Lookup_Thread(646,16342
+void Wait(684,17340
+void Wake_Up(703,17798
+void Wake_Up_One(728,18432
+int Tlocal_Create(746,18805
+void Tlocal_Put(764,19179
+void *Tlocal_Get(Tlocal_Get777,19376
+void Dump_All_Thread_List(791,19596
+
+geekos/screen.c,1638
+#define ESC 28,784
+#define DEFAULT_ATTRIBUTE 29,810
+enum State 31,857
+    S_NORMAL,32,870
+    S_ESC,33,932
+    S_ESC2,34,999
+    S_ARG,35,1070
+    S_CMD,36,1116
+#define MAXARGS 39,1146
+struct Console_State 41,1215
+    int row,43,1274
+    int row, col;43,1274
+    int saveRow,44,1292
+    int saveRow, saveCol;44,1292
+    uchar_t currentAttr;45,1318
+    enum State state;48,1405
+    int argList[argList49,1427
+    int numArgs;50,1453
+static struct Console_State s_cons;53,1474
+#define NUM_SCREEN_DWORDS 55,1511
+#define NUM_SCROLL_DWORDS 56,1567
+#define NUM_DWORDS_PER_LINE 57,1627
+#define FILL_DWORD 58,1671
+static void Scroll(64,1848
+static void Clear_To_EOL(85,2306
+static void Newline(99,2589
+static void Put_Graphic_Char(114,2886
+static void Output_Literal_Character(133,3364
+static void Move_Cursor(168,4058
+static const uchar_t s_ansiToVgaColor[s_ansiToVgaColor187,4364
+static void Update_Attributes(195,4547
+static void Reset(215,5119
+static void Start_Escape(222,5233
+static void Start_Arg(229,5373
+static void Save_Cursor(239,5590
+static void Restore_Cursor(246,5728
+static void Add_Digit(253,5879
+static int Get_Arg(267,6178
+static void Put_Char_Imp(278,6447
+static void Update_Cursor(353,7967
+void Init_Screen(393,9110
+void Clear_Screen(407,9357
+void Get_Cursor(424,9624
+bool Put_Cursor(437,9905
+uchar_t Get_Current_Attr(456,10230
+void Set_Current_Attr(464,10344
+void Put_Char(475,10626
+void Put_String(487,10866
+void Put_Buf(500,11125
+static void Print_Emit(512,11353
+static void Print_Finish(513,11429
+static struct Output_Sink s_outputSink 514,11498
+void Print(520,11679
+
+geekos/lowlevel.asm,4813
+; Copyright 2,55
+; Copyright 3,125
+; $Revision: 1.15 $4,194
+; This is free software.  You are permitted to use,6,215
+; redistribute,7,267
+; to populate the IDT.  It also contains the interrupt handlinli11,455
+; to populate the IDT.  It also contains the interrupt handling11,455
+; Definitions20,681
+INTERRUPT_STATE_SIZE equ 24,827
+; This must be kept up to date with:with27,910
+;   - Interrupt_State struct in int.hh28,947
+;   - Setup_Initial_Thread_Context(29,985
+%endmacroendmacro59,1492
+; Number of bytes between the top of the stack and62,1504
+; the interrupt number after the general-purpose and segment63,1555
+	jmp	Handle_Interrupt 73,1878
+%endmacroendmacro74,1925
+; generate an explicit error code.  We push a dummy error77,1995
+; code on the stack,78,2053
+; code on the stack, so the stack layout is the same78,2053
+	jmp	Handle_Interrupt 84,2228
+%endmacroendmacro85,2275
+; Symbol imports and exports89,2360
+; This symbol is defined in idt.c,c92,2463
+; This symbol is defined in idt.c, and is a table of addresses92,2463
+IMPORT g_currentThread97,2657
+; Set to non-zero when we need to choose a new thread99,2681
+IMPORT g_preemptionDisabled104,2839
+IMPORT Get_Next_Runnable107,2930
+IMPORT Make_Runnable110,3001
+; and without error codes.  The code in idt.c uses this114,3086
+; information to infer the layout of the table of interrupt115,3142
+; handler entry points,116,3202
+; handler entry points, without needing a separate linker116,3202
+; Simple functions to load the IDTR,121,3369
+; Simple functions to load the IDTR, GDTR,121,3369
+EXPORT Load_LDTR124,3456
+EXPORT g_entryPointTableEnd128,3564
+EXPORT Get_Current_EFLAGS134,3695
+; Code138,3796
+; Load IDTR with 6-byte pointer whose address is passed as143,3894
+	mov	eax,147,3989
+	ret149,4019
+;  Load the GDTR with 6-byte pointer whose address is151,4025
+; passed as the parameter.  Assumes that interrupts152,4079
+	mov	eax,156,4166
+	lgdt	157,4184
+	mov	ax,159,4224
+	mov	ds,160,4243
+	mov	es,161,4255
+	mov	fs,162,4267
+	mov	gs,163,4279
+	mov	ss,164,4291
+	ret167,4331
+	mov	eax,172,4412
+	ret174,4439
+; Save registers,177,4479
+; Save registers, call C handler function,177,4479
+; possibly choose a new thread to run,178,4522
+; possibly choose a new thread to run, restore178,4522
+; registers,179,4569
+	; Save registers 182,4635
+	add	esp, 4			; clear 1 argument201,5206
+	; If preemption is disabled,203,5240
+	; If preemption is disabled, then the current thread203,5240
+	cmp	205,5312
+	jne	.restorerestore206,5349
+	add	esp,215,5554
+	add	esp, 4			; clear 1 argument215,5554
+	; Save stack pointer in current thread context,217,5588
+	; Save stack pointer in current thread context, and217,5588
+	mov	eax,219,5666
+	mov	220,5694
+	mov	[eax+0], esp	220,5694
+	mov	221,5725
+	mov	[eax+4], dword 221,5725
+	mov	[eax+4], dword 0	; numTicks field221,5725
+	; Pick a new thread to run,223,5765
+	mov	esp, [eax+0]		; esp field226,5870
+	mov	229,5934
+.restore:restore231,5968
+	Restore_Registers234,6000
+	iret237,6050
+; Switch_To_Thread(240,6130
+;   Save context of currently executing thread,241,6151
+;   Save context of currently executing thread, and activate241,6151
+; Parameter:Parameter244,6277
+;   - ptr to Kernel_Thread whose state should be restored and made active245,6291
+; Notes:Notes247,6367
+; This must be kept up to date with definition of Kernel_Thread249,6411
+Switch_To_Thread:Switch_To_Thread253,6581
+	; We start with a stack that looks like this:this255,6668
+	;            thread_ptr257,6718
+	; We change it to look like this:this260,6772
+	;            thread_ptr262,6810
+	;            eflags263,6835
+	;            cs264,6856
+	mov	eax,268,6922
+	pushfd	271,7058
+	push	dword KERNEL_CS	273,7153
+	sub	esp,274,7194
+	push	dword 278,7303
+	Save_Registers281,7353
+	mov	eax,284,7436
+	mov	285,7464
+	mov	[eax+0], esp285,7464
+	; Clear numTicks field in thread context,287,7483
+	; Clear numTicks field in thread context, since this287,7483
+	mov	289,7567
+	mov	[eax+4], dword 289,7567
+	; We skip over the Interrupt_State struct on the stack to292,7646
+	mov	eax,294,7727
+	; Make the new thread current,296,7765
+	; Restore general purpose and segment registers,301,7870
+	; Restore general purpose and segment registers, and clear interrupt301,7870
+	Restore_Registers303,7966
+	; exeex306,8036
+	iret307,8055
+	pushfd	312,8137
+	pop	eax	313,8161
+	ret314,8195
+; We also define symbols to indicate the extend of the table318,8337
+; of entry points,319,8398
+g_entryPointTableStart:g_entryPointTableStart322,8539
+Int_No_Err 332,8716
+Int_No_Err 343,8885
+Int_No_Err 349,9015
+Int_With_Err 351,9080
+g_entryPointTableEnd:g_entryPointTableEnd362,9318
+; Exported symbols defining the size of handler entry points366,9358
+g_handlerSizeNoErr: dd 369,9466
+
+geekos/main.c,49
+static void Echo_Keys(29,719
+void Main(59,1273
+
+geekos/synch.c,315
+static void Mutex_Wait(35,1003
+static __inline__ void Mutex_Lock_Imp(51,1338
+static __inline__ void Mutex_Unlock_Imp(72,1806
+void Mutex_Init(104,2732
+void Mutex_Lock(114,2902
+void Mutex_Unlock(126,3104
+void Cond_Init(138,3318
+void Cond_Wait(146,3466
+void Cond_Signal(188,4663
+void Cond_Broadcast(200,4995
+
+geekos/TAGS,3203
+bget.c,c2,2
+#define SizeQuant 3,14
+#define BestFit 4,43
+#define assert(5,70
+#define NDEBUG	6,96
+    struct bfhead *blink;blink12,284
+    bufsize prevfree;14,350
+    bufsize bsize;15,382
+#define BH(16,411
+    bufsize tsize;18,458
+    struct bhead bh;19,487
+#define BDH(20,518
+    struct bhead bh;22,566
+    struct qlinks ql;23,597
+#define BFH(24,629
+#define QLSize	33,921
+#define SizeQ	34,947
+#define V 35,972
+#define ESent	36,993
+; Copyright 73,2016
+; $Revision: 1.7 $3$74,2034
+; This is free software.  You are permitted to use,75,2058
+; redistribute,76,2116
+; Loads setup code and a program image from sectors 1..n of a floppy8floppy77,2138
+; and Linux version 2.2.x,x13x178,2213
+; and Linux version 2.2.x, so the following copyrights apply:apply13apply179,2249
+; Copyright 80,2324
+; modified by Drew Eckhardt16Eckhardt182,2393
+; modified by Bruce Evans 83,2428
+; This macro is used to calculate padding needed22needed284,2462
+; to ensure that the boot sector is exactly 512 bytes23bytes285,2518
+ov58ov591,2734
+	mov	ds, ax	94,2823
+	add	sp,99,2943
+load_kernel:load_kernel91load_kernel9101,3005
+	; Load the kernel image from sectors KERN_START_SEC..n of the92the9102,3038
+	; floppy into memory at KERNSEG.  Note that there are 128 sectors93sectors9103,3109
+	add	sp,115,3447
+	jl	.againagain12againagain1117,3511
+	jmp	SETUPSEG:SETUPSEG124SETUPSEG12119,3560
+; be re-written at some point so it reads more than one128one12120,3593
+; Parameters:Parameters131Parameters13121,3658
+;     - "logical" sector number 122,3692
+#define POLYNOMIAL 128,3827
+	mov	[eax+4], dword 432,14447
+	mov	[eax+4], dword 0	; numTicks field221field22432,14447
+	mov	esp,434,14533
+	iret237iret23438,14643
+;   Save context of currently executing thread,440,14687
+;   Save context of currently executing thread, and activate241activate24441,14744
+; Parameter:Parameter244Parameter24442,14814
+;   - ptr to Kernel_Thread whose state should be restored and made active245active24443,14846
+; Notes:Notes247Notes24444,14929
+Switch_To_Thread:Switch_To_Thread253Switch_To_Thread25446,15026
+	; We start with a stack that looks like this:this255this25447,15070
+	;            thread_ptr257thread_ptr25448,15131
+	; We change it to look like this:this260this26449,15165
+	;            thread_ptr262thread_ptr26450,15214
+	;            eflags263eflags26451,15248
+	mov	[eax+0], esp285esp28461,15473
+	; Clear numTicks field in thread context,462,15500
+	mov	[eax+4], dword 465,15630
+	mov	eax,467,15728
+	; Make the new thread current,468,15747
+	; Restore general purpose and segment registers,469,15788
+	Restore_Registers303Restore_Registers30471,15926
+	ret314ret31476,16025
+; We also define symbols to indicate the extend of the table318table31477,16039
+g_entryPointTableEnd:g_entryPointTableEnd362g_entryPointTableEnd36484,16279
+extern int debugFaults;500,16647
+#define Debug(501,16679
+static struct Page_List s_freeList;502,16702
+int unsigned s_numPages;503,16746
+    int saveRow, saveCol;525,17252
+    uchar_t currentAttr;526,17286
+    enum State state;527,17319
+
+geekos/io.c,116
+void Out_Byte(15,302
+uchar_t In_Byte(27,473
+void Out_Word(43,668
+ushort_t In_Word(55,840
+void IO_Delay(72,1080
+
+geekos/timer.c,477
+volatile ulong_t g_numTicks;22,500
+static int s_spinCountPerTick;27,604
+#define CALIBRATE_NUM_TICKS	32,705
+#define DEFAULT_MAX_TICKS 38,852
+int g_Quantum 43,909
+#define TICKS_PER_SEC 49,1039
+#  define Debug(53,1109
+#  define Debug(55,1152
+static void Timer_Interrupt_Handler(62,1358
+static void Timer_Calibrate(90,1940
+static void Spin(110,2420
+static void Calibrate_Delay(136,3009
+void Init_Timer(171,3840
+#define US_PER_TICK 192,4329
+void Micro_Delay(199,4504
+
+geekos/fd_boot.asm,1865
+; Copyright 2,25
+; Copyright 3,90
+; $Revision: 1.5 $4,159
+; This is free software.  You are permitted to use,6,179
+; redistribute,7,231
+; Loads setup code and a program image from sectors 1..n of a floppy9,298
+; and Linux version 2.2.x,x14,503
+; and Linux version 2.2.x, so the following copyrights apply:apply14,503
+; Copyright 16,566
+; Copyright (C) 1991, 1992 Linus Torvalds16,566
+; modified by Drew Eckhardt17,608
+; modified by Bruce Evans 18,636
+;    Usage: Pad_From_Symbol offset,24,776
+%endmacroendmacro27,872
+; The actual code30,956
+BeginText:BeginText36,1069
+BeginText:	; needed to calculate padding bytes to fill the sector36,1069
+	mov	ax,39,1174
+	mov	ds,40,1191
+	mov	ds, ax	40,1191
+	mov	cx,46,1433
+	rep	movsw	47,1474
+after_move:after_move51,1530
+ov53,1576
+	; We want the data segment to refer to INITSEG54,1577
+	mov	ds, ax	56,1690
+	mov	ds, ax			; ax still contains INITSEG56,1690
+	push	ax	72,2076
+	shl	ax,75,2230
+	push	ax	76,2261
+	add	sp,80,2362
+	add	sp, 6			; clear 3 word params80,2362
+	inc	word 83,2419
+load_kernel:load_kernel90,2523
+	; Load the kernel image from sectors KERN_START_SEC..n of the91,2536
+	; floppy into memory at KERNSEG.  Note that there are 128 sectors92,2599
+	; per 64K segment.  So, when figuring out which segment to93,2666
+	mov	ax,103,2980
+	push	ax	104,3033
+	mov	cx, ax	106,3130
+	shr	ax,107,3157
+	shl	ax,108,3186
+	add	ax, KERNSEG	109,3229
+	push	ax	110,3285
+	shl	cx,112,3368
+	push	cx	113,3407
+	add	sp,117,3509
+	add	sp, 6			; clear 3 word params117,3509
+	inc	word 120,3566
+	jl	.againagain125,3680
+	; Jump to t128,3749
+	jmp	SETUPSEG:SETUPSEG129,3772
+; be re-written at some point so it reads more than one133,3888
+; Parameters:Parameters136,3966
+;     - "logical" sector number 137,3980
+;     - destination segment 138,4021
+	push	bp	141,4115
+	mov	bp, sp	142,4147
+
+geekos/irq.c,262
+static ushort_t s_irqMask 24,695
+#define MASTER(29,789
+#define SLAVE(30,826
+void Install_IRQ(41,1122
+ushort_t Get_IRQ_Mask(50,1336
+void Set_IRQ_Mask(58,1419
+void Enable_IRQ(80,1784
+void Disable_IRQ(95,2029
+void Begin_IRQ(111,2326
+void End_IRQ(119,2485
+
+geekos/trap.c,56
+static void GPF_Handler(24,565
+void Init_Traps(40,911
+
+geekos/setup.asm,3911
+; GeekOS setup code1,0
+; Copyright 2,20
+; $Revision: 1.10 $3,85
+; This is free software.  You are permitted to use,5,106
+; redistribute,6,158
+; and Linux version 2.2.x,x9,281
+; and Linux version 2.2.x, so the following copyrights apply:apply9,281
+; Copyright 11,344
+; Copyright (C) 1991, 1992 Linus Torvalds11,344
+; modified by Drew Eckhardt12,386
+; modified by Bruce Evans 13,414
+	; Redefine the data segment so we can access variables23,546
+	mov	ax,25,628
+	mov	ds,26,646
+	mov	ds, ax26,646
+	; Extended memory is the memory above 1MB.  So by29,717
+	; adding 1MB to this amount,30,768
+	; adding 1MB to this amount, we get the total amount30,768
+	; of system memory.  We can only detect 64MB this way,31,822
+	mov	ah,33,904
+	add	ax,35,928
+	add	ax, 1024	; 1024 KB 35,928
+	call	Kill_Motor39,1014
+	; Block interrupts,41,1032
+	; and we no longer need BIOS servser42,1097
+	cli43,1137
+	lgdt	47,1195
+	; Initialize the interrupt controllers,49,1216
+	; Initialize the interrupt controllers, and enable the49,1216
+	call	Enable_A2052,1307
+	mov	ax,55,1354
+	lmsw	ax56,1368
+setup_32:setup_3262,1461
+	mov	ax,65,1505
+	mov	ds,66,1524
+	mov	es,67,1536
+	mov	fs,68,1548
+	mov	gs,69,1560
+	mov	ss,70,1572
+	mov	ss, ax70,1572
+	; Note that we push the fields on in reverse order,76,1701
+	xor	eax,78,1790
+	mov	ax,79,1804
+	push	eax	80,1845
+	push	dword 81,1868
+	push	dword 8		; bootInfoSize81,1868
+	; Pass pointer to Boot_Info struct as argument to kernel83,1899
+	push	esp85,1973
+	push	dword (SETUPSEG<<4)+.returnAddrreturnAddr89,2055
+.returnAddr:returnAddr94,2146
+.here:	jmp .herehere96,2188
+	mov	dx,103,2301
+	xor	al,104,2316
+	out	dx,105,2328
+Init_PIC:Init_PIC108,2346
+	mov	al,110,2392
+	out	0x20,x20111,2406
+	out	0x20, al	111,2406
+	out	0xA0,xA0113,2450
+	out	0xA0, al	113,2450
+	mov	al,115,2493
+	out	0x21,x21116,2514
+	out	0x21, al	116,2514
+	mov	al,118,2558
+	out	0xA1,xA1119,2578
+	out	0xA1, al	119,2578
+	mov	al,121,2621
+	out	0x21,x21122,2642
+	out	0x21, al	122,2642
+	mov	al,124,2686
+	out	0xA1,xA1125,2706
+	out	0xA1, al	125,2706
+	mov	al,127,2749
+	out	0x21,x21128,2763
+	out	0x21, al	128,2763
+	out	0xA1,xA1130,2807
+	out	0xA1, al	130,2807
+	mov	al,132,2850
+	mov	al, 0xff	xff132,2850
+	out	0xA1,xA1133,2890
+	out	0xA1, al	133,2890
+	mov	al,135,2933
+	mov	al, 0xfb	xfb135,2933
+	out	0x21,x21136,2980
+	out	0x21, al	136,2980
+	ret138,3024
+; The idea is that some systems issue port I/O instructions141,3054
+.done:	ret145,3186
+; Enable the A20 address line,147,3198
+; Enable the A20 address line, so we can correctly address147,3198
+	mov	al,150,3289
+	out	0x64,x64151,3303
+	mov	al,153,3329
+	out	0x60,x60154,3343
+	ret156,3369
+; Setup data160,3449
+mem_size_kbytes: dw 163,3536
+; code,168,3694
+; code, data,168,3694
+; code, data, and stack.  Note that this GDT is just used168,3694
+; to create an environment where we can start running 32 bit169,3752
+NUM_GDT_ENTRIES equ 174,3970
+GDT_ENTRY_SZ equ 175,4020
+align 177,4070
+GDT:GDT178,4084
+	dw 183,4135
+	dw 0xFFFF	xFFFF186,4179
+	dw 0x0000	x0000187,4222
+	db 0x00	x00188,4273
+	db 0x9A	x9A189,4316
+	db 0x9A		; present,189,4316
+	db 0x9A		; present, DPL=189,4316
+			;   readable,190,4378
+	db 0xCF	xCF191,4408
+	db 0xCF		; granularity=191,4408
+	db 0x00		; byte 3 of segment base address192,4472
+	; Descriptor 2: kernel data and stack segment194,4516
+	; NOTE: what Intel calls an "expand-up" segment195,4563
+	; actually means that the stack will grow DOWN,196,4612
+	; towards lower memory.  So,197,4661
+	; towards lower memory.  So, we can use this descriptor197,4661
+	dw 0x0000	x0000200,4800
+	db 0x00	x00201,4851
+	db 0x92	x92202,4894
+	db 0x92		; present,202,4894
+	db 0x92		; present, DPL=202,4894
+			;   writable,203,4951
+	db 0xCF	xCF204,4981
+	db 0xCF		; granularity=204,4981
+	dw NUM_GDT_ENTRIES*GDT_ENTRY_SZ	GDT_ENTRY_SZ208,5094
+	dd (SETUPSEG<<4) + GDT	209,5135
+
+geekos/tss.c,247
+static struct TSS s_theTSS;25,545
+static struct Segment_Descriptor *s_tssDesc;s_tssDesc26,573
+static ushort_t s_tssSelector;27,618
+static void __inline__ Load_Task_Register(29,650
+void Init_TSS(46,1023
+void Set_Kernel_Stack_Pointer(65,1526
+
+geekos/segment.c,310
+static __inline__ void Set_Size_And_Base_Pages(20,473
+static __inline__ void Set_Size_And_Base_Bytes(43,1211
+void Init_Null_Segment_Descriptor(59,1631
+void Init_Code_Segment_Descriptor(67,1790
+void Init_Data_Segment_Descriptor(88,2338
+void Init_TSS_Descriptor(109,2870
+void Init_LDT_Descriptor(123,3290
+
+geekos/bget.c,1982
+#define SizeQuant 413,20389
+#define BestFit 443,21445
+#define assert(459,21912
+#define NDEBUG	466,22004
+extern char *sprintf(sprintf468,22140
+#define DumpData 478,22366
+#define MemSize 491,22559
+struct qlinks 496,22686
+    struct bfhead *flink;flink497,22702
+    struct bfhead *blink;blink498,22753
+struct bhead 503,22853
+    bufsize prevfree;504,22868
+    bufsize bsize;507,23006
+#define BH(510,23101
+struct bdhead 514,23196
+    bufsize tsize;515,23212
+    struct bhead bh;516,23275
+#define BDH(518,23326
+struct bfhead 522,23396
+    struct bhead bh;523,23412
+    struct qlinks ql;524,23475
+#define BFH(526,23532
+static struct bfhead freelist 528,23572
+static bufsize totalloc 535,23697
+static long numget 536,23770
+static long numpblk 538,23861
+static long numpget 539,23920
+static long numdget 540,23994
+static bufsize exp_incr 552,24339
+static bufsize pool_len 553,24401
+#define QLSize	563,24659
+#define SizeQ	564,24698
+#define V 566,24757
+#define ESent	572,25031
+void *bget(bget576,25149
+void *bgetz(bgetz762,30326
+void *bgetr(bgetr792,31056
+void brel(827,31857
+void bectl(976,36406
+void bpool(991,36769
+void bstats(1060,38981
+void bstatse(1085,39509
+void bufdump(1105,40055
+void bpoold(1165,41520
+int bpoolv(1214,42827
+#define Repeatable 1265,43899
+#define OUR_RAND	1271,44150
+#define PoolSize 1276,44287
+#define PoolSize 1278,44354
+#define ExpIncr 1280,44421
+#define CompactTries 1281,44485
+#define dumpAlloc 1283,44551
+#define dumpFree 1284,44611
+extern long time(1287,44686
+extern char *malloc(malloc1290,44714
+extern int free _(1291,44737
+static char *bchain bchain1293,44767
+static char *bp bp1294,44832
+static ulong_t int next 1300,44930
+int rand(1304,44994
+void srand(1312,45126
+static void stats(1321,45255
+static int protect 1345,45992
+static int bcompact(1349,46118
+static void *bexpand(bexpand1396,46999
+static void bshrink(1419,47535
+static bufsize blimit(1439,47922
+int main(1462,48343
+
+geekos/int.c,212
+ulong_t Get_Current_EFLAGS(18,456
+static void Dummy_Interrupt_Handler(29,797
+static void Print_Selector(36,960
+void Init_Interrupts(49,1337
+bool Interrupts_Enabled(71,1853
+void Dump_Interrupt_State(80,2017
+
+geekos/util.asm,490
+; and Linux version 2.2.x,x2,47
+; and Linux version 2.2.x, so the following copyrights apply:apply2,47
+; Copyright 4,110
+; Copyright (C) 1991, 1992 Linus Torvalds4,110
+; modified by Drew Eckhardt5,152
+; modified by Bruce Evans 6,180
+; from the Linux bootsect code.  I changed them a little so they13,366
+	mov   cx,19,550
+	rol   dx,21,597
+   	mov   ax,22,656
+   	mov   ax, 0E0Fh	E0Fh22,656
+   	mov   ax, 0E0Fh		; ah 22,656
+   	add   al, 90h		; convert al to ascii hex 24,731
+
+geekos/mem.c,356
+struct Page* g_pageList;29,831
+uint_t g_freePageCount 34,920
+extern int debugFaults;43,1161
+#define Debug(44,1185
+static struct Page_List s_freeList;49,1288
+int unsigned s_numPages;54,1367
+static void Add_Page_Range(59,1461
+extern char end;94,2301
+void Init_Mem(100,2437
+void Init_BSS(165,4797
+void* Alloc_Page(176,4990
+void Free_Page(204,5601
+
+geekos/crc32.c,117
+#define POLYNOMIAL 12,263
+static ulong_t crc_table[crc_table13,302
+void Init_CRC32(20,518
+ulong_t crc32(42,1322
+
+geekos/idt.c,409
+static union IDT_Descriptor s_IDT[s_IDT21,551
+extern char g_entryPointTableStart,29,825
+extern char g_entryPointTableStart, g_entryPointTableEnd;29,825
+extern int g_handlerSizeNoErr,30,883
+extern int g_handlerSizeNoErr, g_handlerSizeErr;30,883
+Interrupt_Handler g_interruptTable[g_interruptTable37,1091
+void Init_IDT(50,1515
+void Init_Interrupt_Gate(97,2906
+void Install_Interrupt_Handler(115,3474
+
+geekos/bootsect.asm,1797
+; Copyright 2,25
+; $Revision: 1.7 $3,86
+; This is free software.  You are permitted to use,5,106
+; redistribute,6,158
+; Loads setup code and a program image from sectors 1..n of a floppy8,225
+; and Linux version 2.2.x,x13,430
+; and Linux version 2.2.x, so the following copyrights apply:apply13,430
+; Copyright 15,493
+; Copyright (C) 1991, 1992 Linus Torvalds15,493
+; modified by Drew Eckhardt16,535
+; modified by Bruce Evans 17,563
+; This macro is used to calculate padding needed22,660
+; to ensure that the boot sector is exactly 512 bytes23,709
+; in size.  The argument is the desired offset to be24,763
+KERN_START_SEC equ 30,897
+	mov	cx,51,1522
+	rep	movsw	52,1563
+after_move:after_move56,1619
+ov58,1665
+	; We want the data segment to refer to INITSEG59,1666
+	mov	ds, ax	61,1779
+	mov	ds, ax			; ax still contains INITSEG61,1779
+	push	ax	74,2089
+	shl	ax,77,2231
+	push	ax	78,2262
+	add	sp,82,2363
+	add	sp, 6			; clear 3 word params82,2363
+	inc	word 85,2420
+load_kernel:load_kernel91,2513
+	; Load the kernel image from sectors KERN_START_SEC..n of the92,2526
+	; floppy into memory at KERNSEG.  Note that there are 128 sectors93,2589
+	; per 64K segment.  So, when figuring out which segment to94,2656
+	mov	ax,99,2857
+	push	ax	100,2910
+	mov	cx, ax	102,3008
+	shr	ax,103,3035
+	shl	ax,104,3064
+	add	ax, KERNSEG	105,3107
+	push	ax	106,3163
+	shl	cx,108,3246
+	push	cx	109,3285
+	add	sp,113,3387
+	add	sp, 6			; clear 3 word params113,3387
+	inc	word 116,3444
+	jl	.againagain120,3560
+	; Jump to t123,3629
+	jmp	SETUPSEG:SETUPSEG124,3652
+; be re-written at some point so it reads more than one128,3768
+; Parameters:Parameters131,3846
+;     - "logical" sector number 132,3860
+;     - destination segment 133,3901
+	push	bp	136,3995
+	mov	bp, sp	137,4027
+
+geekos/keyboard.c,1030
+#define LEFT_SHIFT 45,1096
+#define RIGHT_SHIFT 46,1121
+#define LEFT_CTRL 47,1146
+#define RIGHT_CTRL 48,1171
+#define LEFT_ALT 49,1196
+#define RIGHT_ALT 50,1221
+#define SHIFT_MASK 51,1246
+#define CTRL_MASK 52,1293
+#define ALT_MASK 53,1338
+static unsigned s_shiftState 54,1381
+#define QUEUE_SIZE 60,1510
+#define QUEUE_MASK 61,1533
+#define NEXT(62,1557
+static Keycode s_queue[s_queue63,1606
+static int s_queueHead,64,1642
+static int s_queueHead, s_queueTail;64,1642
+static struct Thread_Queue s_waitQueue;69,1744
+static const Keycode s_scanTableNoShift[s_scanTableNoShift74,1860
+#define SCAN_TABLE_SIZE 98,3256
+static const Keycode s_scanTableWithShift[s_scanTableWithShift105,3485
+static __inline__ bool Is_Queue_Empty(130,4884
+static __inline__ bool Is_Queue_Full(135,4972
+static __inline__ void Enqueue_Keycode(140,5065
+static __inline__ Keycode Dequeue_Keycode(148,5229
+static void Keyboard_Interrupt_Handler(160,5470
+void Init_Keyboard(261,7611
+bool Read_Key(289,8242
+Keycode Wait_For_Key(310,8581
+
+geekos/defs.asm,1686
+; Copyright 2,42
+; $Revision: 1.7 $3,103
+; This is free software.  You are permitted to use,5,123
+; redistribute,6,175
+; and Linux version 2.2.x,x9,298
+; and Linux version 2.2.x, so the following copyrights apply:apply9,298
+; Copyright 11,361
+; Copyright (C) 1991, 1992 Linus Torvalds11,361
+; modified by Drew Eckhardt12,403
+; modified by Bruce Evans 13,431
+BOOTSEG equ 0x07C0x07C020,599
+; NotNo23,669
+; Note that the "ISA hole" begins at segment 0xA000 xA00023,669
+; Put the setup code here,26,750
+SETUPSEG equ 0x9020x902027,805
+; Load our "Kernel" at this segment,29,826
+; The number of sectors in the kernel,30,884
+; The number of sectors in the kernel, NUM_KERN_SECTORS,30,884
+KERNSEG equ 0x1000x100032,979
+PFAT_BOOT_RECORD_SIZE equ 36,1067
+BIOS_SIGNATURE_OFFSET equ 39,1145
+PFAT_BOOT_RECORD_OFFSET equ BIOS_SIGNATURE_OFFSET - PFAT_BOOT_RECORD_SIZE42,1221
+VIDSEG equ 0xb800xb80045,1319
+; Yes,48,1397
+CYLINDERS equ 51,1463
+; Source: Linux bootsect.S,S54,1515
+; Source: Linux bootsect.S, and Intel 8259A datasheet54,1515
+; The most important reason why we reprogram the PICs is to56,1570
+; route the hardware interrupts through vectors *above*above57,1630
+; those reserved by Intel.  The BIOS 58,1686
+; routes them such that they conflict with internal processor-generatedgenerated59,1751
+ICW1 equ 0x11	x1162,1838
+ICW1 equ 0x11		; ICW1 - ICW4 needed,62,1838
+ICW1 equ 0x11		; ICW1 - ICW4 needed, cascade mode,62,1838
+ICW1 equ 0x11		; ICW1 - ICW4 needed, cascade mode, interval=62,1838
+			;   edge triggered. (I think interval is irrelevant63,1901
+ICW2_MASTER equ 0x20	; put IRQs 0-7 at 0x20 x2065,1973
+; We put them at 1MB,MB79,2598
+
+geekos/symbol.asm,256
+; Symbol mangling macros1,0
+; Copyright 2,25
+; $Revision: 1.4 $3,86
+; For example,7,230
+; For example, PECOFF requires a leading underscore,7,230
+; EXPORT defines a symbol as global10,306
+; IMPORT references a symbol defined in another module11,342
+
+geekos/README.txt,0
+
+geekos/depend.mak,0
+
+TAGS,0

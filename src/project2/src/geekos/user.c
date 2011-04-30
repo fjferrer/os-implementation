@@ -149,6 +149,7 @@ void Switch_To_User_Context(struct Kernel_Thread* kthread, struct Interrupt_Stat
      * functions.
      */
 
+    // check if the thread has usercontext or not and switch
     if (kthread->userContext != NULL){
         Set_Kernel_Stack_Pointer(kthread->esp);
         Switch_To_Address_Space(kthread->userContext);

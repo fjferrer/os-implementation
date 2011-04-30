@@ -140,17 +140,11 @@ static void Calibrate_Delay(void)
 
     Disable_Interrupts();
 
-    Print("- irq  disabled\n");
-
     /* Install temporarily interrupt handler */
     Install_IRQ(TIMER_IRQ, &Timer_Calibrate);
     Enable_IRQ(TIMER_IRQ);
 
-    Print("- interrupt handler installed\n");
-
     Enable_Interrupts();
-
-    Print("- irq enabled\n");
 
     /* Wait a few ticks */
     while (g_numTicks < CALIBRATE_NUM_TICKS)

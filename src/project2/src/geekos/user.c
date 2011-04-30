@@ -100,7 +100,7 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
      */
 
     void * pBuffer = NULL;
-    ulong_t * pLen = NULL;
+    ulong_t * pLen = NULL; //check if not better ulong_t pLen and then &pLen
     int iErrorCode = 0;
 
     char * exeFileData = NULL;
@@ -127,9 +127,9 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
 
     *pThread = Start_User_Thread( pUserContext, detached);
     if (pThread == NULL) {
-      return -5;}
+        return -5;}
     else {
-      return 0;}
+        return 0;}
  }
 
 /*
@@ -142,12 +142,16 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
  *      the thread was interrupted
  */
 void Switch_To_User_Context(struct Kernel_Thread* kthread, struct Interrupt_State* state)
-{
+  {
     /*
      * Hint: Before executing in user mode, you will need to call
      * the Set_Kernel_Stack_Pointer() and Switch_To_Address_Space()
      * functions.
      */
-    TODO("Switch to a new user address space, if necessary");
+
+    if (kthread->userContext != NULL){
+        Set_Kernel_Stack_Pointer(kthread->esp);
+        Switch_To_Address_Space(kthread->userContext);
+    }
 }
 

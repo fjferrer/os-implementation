@@ -99,38 +99,68 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
      * pThread and return 0.  Otherwise, return an error code.
      */
 
-    void * pBuffer = NULL;
-    ulong_t * pLen = NULL; //check if not better ulong_t pLen and then &pLen
+    void *pBuffer = NULL;
+    ulong_t *pLen = NULL; //check if not better ulong_t pLen and then &pLen
     int iErrorCode = 0;
 
-    char * exeFileData = NULL;
-    struct Exe_Format * exeFormat = NULL;
+    char *exeFileData = NULL;
+    struct Exe_Format *exeFormat = NULL;
     ulong_t exeFileLength = 0;
 
-    struct User_Context * pUserContext = NULL;
+    struct User_Context *pUserContext = NULL;
 
     bool detached = false;
 
     iErrorCode = Read_Fully(program, &pBuffer, pLen);
-    if (iErrorCode < 0){ return -1; } //check
-
+    if (iErrorCode < 0)
+      { 
+	iErrorCode = -1;
+	goto error;
+      } //check
 
     exeFileData = (char*) pBuffer;
     exeFileLength = *pLen;
+
     iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, exeFormat);
-    if (iErrorCode < 0){ return -2; } //check
+    if (iErrorCode < 0)
+      {
+	iErrorCode = -2;
+	goto error;
+      } //check
 
 
     iErrorCode = Load_User_Program( exeFileData, exeFileLength, exeFormat, command,
 				    &pUserContext);
-    if (iErrorCode < 0){ return -3; } //check
+    if (iErrorCode < 0)
+      { 
+	iErrorCode = -3;
+	goto error;
+      } //check
 
     *pThread = Start_User_Thread( pUserContext, detached);
-    if (pThread == NULL) {
-        return -5;}
-    else {
-        return 0;}
- }
+    if (pThread == NULL)
+      {
+	iErrorCode = -5;
+	goto error;
+    }
+    else
+      {
+	iErrorCode = (*pThread)->pid;
+        return iErrorCode;
+      }
+
+    //*pThread = process;
+    iErrorCode =(*pThread)->pid;
+
+error:
+    if (exeFileData)
+        Free(exeFileData);
+
+    exeFileData = 0;
+ 
+    return iErrorCode;
+  }
+
 
 /*
  * If the given thread has a User_Context,

@@ -80,6 +80,7 @@ static struct User_Context* Create_User_Context(ulong_t size)
     userContext->dsSelector = ds_selector;
     userContext->size = size;
     userContext->memory = mem;
+    userContext->refCount = 0;
 
     goto success;
 
@@ -93,11 +94,6 @@ error:
 success:
     return userContext;
 }
-
-/* TODO: Implement
-static struct User_Context* Create_User_Context(ulong_t size)
-*/
-
 
 static bool Validate_User_Memory(struct User_Context* userContext,
     ulong_t userAddr, ulong_t bufSize)
@@ -124,13 +120,18 @@ static bool Validate_User_Memory(struct User_Context* userContext,
  */
 void Destroy_User_Context(struct User_Context* userContext)
 {
+    KASSERT(userContext != NULL);
+    KASSERT(userContext->memory != NULL);
+    KASSERT(userContext->ldtDescriptor != NULL);
     /*
      * Hints:
      * - you need to free the memory allocated for the user process
      * - don't forget to free the segment descriptor allocated
      *   for the process's LDT
      */
-    TODO("Destroy a User_Context");
+    Free_Segment_Descriptor(userContext->ldtDescriptor);
+    Free(userContext->memory);
+    Free(userContext);
 }
 
 /*
@@ -155,6 +156,10 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
     struct Exe_Format *exeFormat, const char *command,
     struct User_Context **pUserContext)
   {
+    KASSERT(exeFileData != NULL);
+    KASSERT(command != NULL);
+    KASSERT(exeFormat != NULL);
+    
     /*
      * Hints:
      * - Determine where in memory each executable segment will be placed
@@ -180,10 +185,11 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
     /* Find maximum virtual address */
     for (i = 0; i < exeFormat->numSegments; ++i) {
         struct Exe_Segment *segment = &exeFormat->segmentList[i];
-	ulong_t topva = segment->startAddress + segment->sizeInMemory;
+        ulong_t topva = segment->startAddress + segment->sizeInMemory;
 
-	if (topva > maxva)
-	    maxva = topva;
+        if (topva > maxva)
+            maxva = topva;
+
     }
 
     Get_Argument_Block_Size(command, &numArgs, &argBlockSize);
@@ -220,7 +226,6 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
     *pUserContext = userContext;
 
     return ret;
-
     //    TODO("Load a user executable into a user memory space using segmentation");
 }
 
@@ -238,6 +243,8 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
  */
 bool Copy_From_User(void* destInKernel, ulong_t srcInUser, ulong_t bufSize)
 {
+    KASSERT(destInKernel != NULL);
+    KASSERT(srcInUser != 0);
     /*
      * Hints:
      * - the User_Context of the current process can be found
@@ -247,8 +254,18 @@ bool Copy_From_User(void* destInKernel, ulong_t srcInUser, ulong_t bufSize)
      * - make sure the user buffer lies entirely in memory belonging
      *   to the process
      */
-    TODO("Copy memory from user buffer to kernel buffer");
-    Validate_User_Memory(NULL,0,0); /* delete this; keeps gcc happy */
+    bool mem_valid = false;
+
+    if (g_currentThread->userContext != NULL) {
+        mem_valid = Validate_User_Memory(g_currentThread->userContext,
+                                            srcInUser, bufSize);
+        if (mem_valid) {
+                memcpy(destInKernel,
+                        g_currentThread->userContext->memory+srcInUser,
+                        bufSize);
+        }
+    }
+    return mem_valid;
 }
 
 /*
@@ -265,10 +282,22 @@ bool Copy_From_User(void* destInKernel, ulong_t srcInUser, ulong_t bufSize)
  */
 bool Copy_To_User(ulong_t destInUser, void* srcInKernel, ulong_t bufSize)
 {
+    KASSERT(srcInKernel != NULL);
+    KASSERT(destInUser != 0);
     /*
      * Hints: same as for Copy_From_User()
      */
-    TODO("Copy memory from kernel buffer to user buffer");
+    bool mem_valid = false;
+
+    if (g_currentThread->userContext != NULL) {
+        mem_valid = Validate_User_Memory(g_currentThread->userContext,
+                                            destInUser, bufSize);
+        if (mem_valid) {
+            memcpy(g_currentThread->userContext->memory+destInUser, srcInKernel,
+                    bufSize);
+        }
+    }
+    return mem_valid;
 }
 
 /*
@@ -279,6 +308,9 @@ bool Copy_To_User(ulong_t destInUser, void* srcInKernel, ulong_t bufSize)
  */
 void Switch_To_Address_Space(struct User_Context *userContext)
   {
+    KASSERT(userContext != NULL);
+    KASSERT(userContext->ldtSelector != 0);
+
     /*
      * Hint: you will need to use the lldt assembly language instruction
      * to load the process's LDT by specifying its LDT selector.

@@ -15,7 +15,6 @@
 #include <geekos/pfat.h>
 #include <geekos/malloc.h>
 #include <geekos/string.h>
-#include <geekos/user.h>
 #include <geekos/elf.h>
 
 
@@ -28,6 +27,7 @@
  *   and entry address; to be filled in
  * @return 0 if successful, < 0 on error
  */
+
 int Parse_ELF_Executable(char *exeFileData, ulong_t exeFileLength,
     struct Exe_Format *exeFormat)
   {
@@ -98,4 +98,3 @@ int Parse_ELF_Executable(char *exeFileData, ulong_t exeFileLength,
     
     return 0;
 }
-

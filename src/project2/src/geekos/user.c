@@ -99,29 +99,70 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
      * pThread and return 0.  Otherwise, return an error code.
      */
 
-    void *pBuffer = NULL;
-    ulong_t *pLen = NULL; //check if not better ulong_t pLen and then &pLen
+    /*
+      ==============================================================================
+    char *exeFileData = 0;
+    ulong_t exeFileLength = 0;
+    struct Exe_Format exeFormat;
+    struct User_Context *userContext = NULL;
+    struct Kernel_Thread *process = NULL;
+    int ret = 0;
+
+    ret = Read_Fully(program, (void**) &exeFileData, &exeFileLength);
+    if (ret != 0) {
+        ret = ENOTFOUND;
+        goto error;
+    }
+
+    ret = Parse_ELF_Executable(exeFileData, exeFileLength, &exeFormat);
+    if (ret != 0) {
+        ret = ENOEXEC;
+        goto error;
+    }
+
+    ret = Load_User_Program(exeFileData, exeFileLength, &exeFormat,
+                            command, &userContext);
+    if (ret != 0) {
+        ret = -1;
+        goto error;
+    }
+
+    process = Start_User_Thread(userContext, false);
+    if (process == NULL) {
+        ret = -1;
+        goto error;
+    }
+
+    *pThread = process;
+===============================================================================
+    */
+    Print("Entro a Spawn\n"); //DEBUG
+
+    //    void *pBuffer = NULL; //replaced with exeFileData
+    //    ulong_t *pLen = NULL; //replaced with exeFileLength
+    //    *exeFileData = (char*) pBuffer; //directly uses exeFileData
+    //    exeFileLength = &pLen; //directly uses exeFileLength
+
     int iErrorCode = 0;
 
-    char *exeFileData = NULL;
-    struct Exe_Format *exeFormat = NULL;
-    ulong_t exeFileLength = 0;
-
-    struct User_Context *pUserContext = NULL;
+    char *exeFileData = NULL; //igual q upstream/master salvo NULL != 0
+    //    struct Exe_Format *exeFormat; //yo creo puntero
+    struct Exe_Format exeFormat; // se crea asi para q no tire error por no inicializado
+    ulong_t exeFileLength = 0; //igual q upstream/master
+    struct User_Context *pUserContext = NULL; //igual q upstream/master
 
     bool detached = false;
 
-    iErrorCode = Read_Fully(program, &pBuffer, pLen);
+    iErrorCode = Read_Fully(program, (void**) &exeFileData, &exeFileLength);
     if (iErrorCode < 0)
       { 
 	iErrorCode = -1;
 	goto error;
       } //check
 
-    exeFileData = (char*) pBuffer;
-    exeFileLength = *pLen;
-
-    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, exeFormat);
+    //    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, exeFormat);
+    // desreferencio porque necesito el puntero
+    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, &exeFormat);
     if (iErrorCode < 0)
       {
 	iErrorCode = -2;
@@ -129,8 +170,11 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
       } //check
 
 
-    iErrorCode = Load_User_Program( exeFileData, exeFileLength, exeFormat, command,
+    //    iErrorCode = Load_User_Program( exeFileData, exeFileLength, exeFormat, command, &pUserContext);
+    // tengo q desreferenciar porq arriba me tiraba el error de no inicializadoexeformat
+    iErrorCode = Load_User_Program( exeFileData, exeFileLength, &exeFormat, command,
 				    &pUserContext);
+
     if (iErrorCode < 0)
       { 
 	iErrorCode = -3;
@@ -157,7 +201,8 @@ error:
         Free(exeFileData);
 
     exeFileData = 0;
- 
+
+    Print("Salgo de Spawn\n"); //DEBUG 
     return iErrorCode;
   }
 

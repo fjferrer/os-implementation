@@ -40,6 +40,9 @@
 
 static struct User_Context* Create_User_Context(ulong_t size)
   {
+
+    Print("Entro al user context\n"); //DEBUG
+
     /* Tiene que ser múltiplo de PAGE_SIZE */
     KASSERT(size%PAGE_SIZE == 0);
 
@@ -89,9 +92,11 @@ error:
         Free(mem);
     if (userContext != NULL)
         Free(userContext);
+    Print("Salgo failed del user context\n"); //DEBUG
     return NULL;
 
 success:
+    Print("Salgo success del user context\n"); //DEBUG
     return userContext;
 }
 

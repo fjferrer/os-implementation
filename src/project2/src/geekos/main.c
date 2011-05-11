@@ -109,12 +109,12 @@ static void Spawn_Init_Process(void)
     // program full path at const INIT_PROGRAM
 
     // Declare pointer to command
-    //    char * pComArg = "shell.exe";   
+    char *pComArg = "shell.exe";   
 
     // Declare kthread struct
-    struct Kernel_Thread * pThread = NULL;
+    struct Kernel_Thread *pThread = NULL;
 
-    //    Spawn(INIT_PROGRAM, pComArg, &pThread);
-    Spawn(INIT_PROGRAM, INIT_PROGRAM, &pThread);
+    Spawn(INIT_PROGRAM, pComArg, &pThread);
+    //    Spawn(INIT_PROGRAM, INIT_PROGRAM, &pThread);
     
 }

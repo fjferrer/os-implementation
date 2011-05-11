@@ -31,29 +31,45 @@
 int Parse_ELF_Executable(char *exeFileData, ulong_t exeFileLength,
     struct Exe_Format *exeFormat)
   {
+
+    Print("Entro a Parse_ELF_Executable\n"); //DEBUG
+
     /* Simple sanity check */
     if (exeFileData == NULL || exeFileLength <= 0 || exeFormat == NULL)
-      return -1;
+      {
+	Print("- in Parse_ELF_Executable:Simple sanity check: no paso\n");
+	return -1;
+      }
     
     elfHeader *elf = (elfHeader *) exeFileData;
+
+    Print("- in Parse_ELF_Executable pase: simple sanity check\n");
 
     /* Check for magic number */
     if (elf->ident[0] != 0x7f || elf->ident[1] != 'E' || 
 	elf->ident[2] != 'L' || elf->ident[3] != 'F') 
       return -1;
-    
+
+    Print("- in Parse_ELF_Executable pase: magic number\n");
+
     /* Fail if not executable */
     if (elf->type != 0x2)
       return -1;
-    
+
+    Print("- in Parse_ELF_Executable pase: file executable\n");
+
     /* Fail if not supported version */
     if (elf->version != 0x1)
       return -1;
+
+    Print("- in Parse_ELF_Executable pase: not supported version\n");
     
     /* Fail if no valid program headers */
     if (elf->phnum < 0)
       return -1;
-    
+
+    Print("- in Parse_ELF_Executable pase: valid program headers\n");
+
     /* Fail if not supported architecture (Intel)*/
     if (elf->machine != 0x3)
       return -1;
@@ -95,6 +111,6 @@ int Parse_ELF_Executable(char *exeFileData, ulong_t exeFileLength,
       program++;
       
     }
-    
+    Print("Salgo OK the Parse_ELF_Executable\n"); //DEBUG    
     return 0;
 }

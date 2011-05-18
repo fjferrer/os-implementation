@@ -27,6 +27,8 @@
  * ---------------------------------------------------------------------- */
 
 #define DEFAULT_USER_STACK_SIZE 8192
+#define LDTCS 0
+#define LDTDS 1
 
 
 /* ----------------------------------------------------------------------
@@ -39,10 +41,7 @@
  */
 
 static struct User_Context* Create_User_Context(ulong_t size)
-  {
-
-    Print("Entro al user context\n"); //DEBUG
-
+{
     /* Tiene que ser múltiplo de PAGE_SIZE */
     KASSERT(size%PAGE_SIZE == 0);
 
@@ -92,11 +91,9 @@ error:
         Free(mem);
     if (userContext != NULL)
         Free(userContext);
-    Print("Salgo failed del user context\n"); //DEBUG
     return NULL;
 
 success:
-    Print("Salgo success del user context\n"); //DEBUG
     return userContext;
 }
 
@@ -176,7 +173,6 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
      *   address, argument block address, and initial kernel stack pointer
      *   address
      */
-
     /* Por Victor Rosales */
     int i = 0;
     int ret = 0;
@@ -194,7 +190,6 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
 
         if (topva > maxva)
             maxva = topva;
-
     }
 
     Get_Argument_Block_Size(command, &numArgs, &argBlockSize);
@@ -231,7 +226,6 @@ int Load_User_Program(char *exeFileData, ulong_t exeFileLength,
     *pUserContext = userContext;
 
     return ret;
-    //    TODO("Load a user executable into a user memory space using segmentation");
 }
 
 /*

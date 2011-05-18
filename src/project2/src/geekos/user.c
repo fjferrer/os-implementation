@@ -84,7 +84,7 @@ void Detach_User_Context(struct Kernel_Thread* kthread)
  *   the executable file doesn't exist.
  */
 int Spawn(const char *program, const char *command, struct Kernel_Thread **pThread)
-  {
+{
     /*
      * Hints:
      * - Call Read_Fully() to load the entire executable into a memory buffer
@@ -99,111 +99,52 @@ int Spawn(const char *program, const char *command, struct Kernel_Thread **pThre
      * pThread and return 0.  Otherwise, return an error code.
      */
 
-    /*
-      ==============================================================================
-    char *exeFileData = 0;
-    ulong_t exeFileLength = 0;
-    struct Exe_Format exeFormat;
-    struct User_Context *userContext = NULL;
-    struct Kernel_Thread *process = NULL;
-    int ret = 0;
+    int iErrCod = 0;
 
-    ret = Read_Fully(program, (void**) &exeFileData, &exeFileLength);
-    if (ret != 0) {
-        ret = ENOTFOUND;
-        goto error;
-    }
-
-    ret = Parse_ELF_Executable(exeFileData, exeFileLength, &exeFormat);
-    if (ret != 0) {
-        ret = ENOEXEC;
-        goto error;
-    }
-
-    ret = Load_User_Program(exeFileData, exeFileLength, &exeFormat,
-                            command, &userContext);
-    if (ret != 0) {
-        ret = -1;
-        goto error;
-    }
-
-    process = Start_User_Thread(userContext, false);
-    if (process == NULL) {
-        ret = -1;
-        goto error;
-    }
-
-    *pThread = process;
-===============================================================================
-    */
-    Print("Entro a Spawn\n"); //DEBUG
-
-    //    void *pBuffer = NULL; //replaced with exeFileData
-    //    ulong_t *pLen = NULL; //replaced with exeFileLength
-    //    *exeFileData = (char*) pBuffer; //directly uses exeFileData
-    //    exeFileLength = &pLen; //directly uses exeFileLength
-
-    int iErrorCode = 0;
-
-    char *exeFileData = NULL; //igual q upstream/master salvo NULL != 0
-    //    struct Exe_Format *exeFormat; //yo creo puntero
-    struct Exe_Format exeFormat; // se crea asi para q no tire error por no inicializado
-    ulong_t exeFileLength = 0; //igual q upstream/master
-    struct User_Context *pUserContext = NULL; //igual q upstream/master
-
+    char *exeFileData = 0;
+    struct Exe_Format exeFormat;
+    ulong_t exeFileLength = 0;
+    struct User_Context *pUserContext = NULL;
     bool detached = false;
 
-    iErrorCode = Read_Fully(program, (void**) &exeFileData, &exeFileLength);
-    if (iErrorCode < 0)
-      { 
-	iErrorCode = -1;
+    struct Kernel_Thread *process = NULL; /* No entiendo pq crea esta var */
+
+    iErrCod = Read_Fully(program, (void**) &exeFileData, &exeFileLength);
+    if (iErrCod != 0) { 
+	iErrCod = ENOTFOUND;
 	goto error;
-      } //check
-
-    //    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, exeFormat);
-    // desreferencio porque necesito el puntero
-    iErrorCode =  Parse_ELF_Executable( exeFileData, exeFileLength, &exeFormat);
-    if (iErrorCode < 0)
-      {
-	iErrorCode = -2;
-	goto error;
-      } //check
-
-
-    //    iErrorCode = Load_User_Program( exeFileData, exeFileLength, exeFormat, command, &pUserContext);
-    // tengo q desreferenciar porq arriba me tiraba el error de no inicializadoexeformat
-    iErrorCode = Load_User_Program( exeFileData, exeFileLength, &exeFormat, command,
-				    &pUserContext);
-
-    if (iErrorCode < 0)
-      { 
-	iErrorCode = -3;
-	goto error;
-      } //check
-
-    *pThread = Start_User_Thread( pUserContext, detached);
-    if (pThread == NULL)
-      {
-	iErrorCode = -5;
-	goto error;
-    }
-    else
-      {
-	iErrorCode = (*pThread)->pid;
-        return iErrorCode;
       }
 
-    //*pThread = process;
-    iErrorCode =(*pThread)->pid;
+    iErrCod =  Parse_ELF_Executable( exeFileData, exeFileLength, &exeFormat);
+    if (iErrCod != 0) {
+	iErrCod = ENOEXEC;
+	goto error;
+      }
+
+    iErrCod = Load_User_Program( exeFileData, exeFileLength, &exeFormat,
+				    command, &pUserContext);
+    if (iErrCod != 0) { 
+	iErrCod = -1;
+	goto error;
+      }
+
+    /* *pThread = Start_User_Thread( pUserContext, detached); */
+    process = Start_User_Thread( pUserContext, detached);
+    if (process == NULL) {
+	iErrCod = -1;
+	goto error;
+    }
+
+    *pThread = process; /* No entiendo xq generar la doble variable process */
+
+    iErrCod = (*pThread)->pid;
 
 error:
     if (exeFileData)
         Free(exeFileData);
-
     exeFileData = 0;
 
-    Print("Salgo de Spawn\n"); //DEBUG 
-    return iErrorCode;
+    return iErrCod;
   }
 
 
@@ -226,8 +167,13 @@ void Switch_To_User_Context(struct Kernel_Thread* kthread, struct Interrupt_Stat
 
     // check if the thread has usercontext or not and switch
     if (kthread->userContext != NULL){
-        Set_Kernel_Stack_Pointer(kthread->esp);
         Switch_To_Address_Space(kthread->userContext);
+        /*
+	 * This line cause an exception breaking all the stuff
+	 * Set_Kernel_Stack_Pointer(kthread->esp);
+	 *
+	*/ 
+        Set_Kernel_Stack_Pointer(((ulong_t) kthread->stackPage) + PAGE_SIZE);
     }
 }
 

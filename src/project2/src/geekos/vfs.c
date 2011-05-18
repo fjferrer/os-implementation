@@ -565,8 +565,6 @@ int Seek(struct File *file, ulong_t len)
  */
 int Read_Fully(const char *path, void **pBuffer, ulong_t *pLen)
 {
-    Print("Entro a Ready_Fully\n"); //DEBUG
-
     struct File *file = 0;
     struct VFS_File_Stat stat;
     int rc;
@@ -597,7 +595,6 @@ int Read_Fully(const char *path, void **pBuffer, ulong_t *pLen)
     Close(file);
     *pBuffer = (void*) buf;
     *pLen = stat.size;
-    Print("Salgo OK the Read_Fully\n"); //DEBUG
     return 0;
 
 memfail:
@@ -607,7 +604,6 @@ fail:
 	Close(file);
     if (buf != 0)
 	Free(buf);
-    Print("Salgo BAD the Read_Fully\n"); //DEBUG
     return rc;
 }
 

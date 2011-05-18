@@ -18,8 +18,6 @@
 #include <geekos/malloc.h>
 #include <geekos/user.h>
 
-#include <geekos/user.h> //is this ok? check itx
-
 /* ----------------------------------------------------------------------
  * Private data
  * ---------------------------------------------------------------------- */
@@ -315,12 +313,6 @@ static void Setup_Kernel_Thread(
      * - The esi register should contain the address of
      *   the argument block
      */
-
-    /*
-      TODO("Create a new thread to execute in user mode");
-      updated from upstream/master
-    */
-
     Attach_User_Context(kthread, userContext);
 
     /* ushort_t dsSelector */
@@ -362,7 +354,6 @@ static void Setup_Kernel_Thread(
     Push(kthread, (ulong_t)userContext->dsSelector); /* es */
     Push(kthread, (ulong_t)userContext->dsSelector); /* fs */
     Push(kthread, (ulong_t)userContext->dsSelector); /* gs */
-
 }
 
 
@@ -557,7 +548,6 @@ struct Kernel_Thread*
 Start_User_Thread(struct User_Context* userContext, bool detached)
   {
     KASSERT(userContext != NULL);
-
     /*
      * Hints:
      * - Use Create_Thread() to create a new "raw" thread object
@@ -566,10 +556,7 @@ Start_User_Thread(struct User_Context* userContext, bool detached)
      * - Call Make_Runnable_Atomic() to schedule the process
      *   for execution
      */
-
-    struct Kernel_Thread* kthread = NULL;
-    
-    kthread = Create_Thread(PRIORITY_USER, detached);
+    struct Kernel_Thread* kthread = Create_Thread(PRIORITY_USER, detached);
     if (kthread != 0) {
         /*
          * Create the initial context for the thread to make
